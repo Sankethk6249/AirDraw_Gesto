@@ -1,0 +1,76 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html { scroll-behavior: smooth; }
+  body {
+    @apply bg-slate-50 font-sans text-slate-800 antialiased dark:bg-[#070b17] dark:text-slate-100;
+    background-image:
+      radial-gradient(60rem 30rem at 85% -10%, rgba(139, 92, 246, 0.14), transparent 60%),
+      radial-gradient(50rem 28rem at -10% 10%, rgba(6, 182, 212, 0.12), transparent 60%);
+    background-attachment: fixed;
+  }
+  :focus-visible { @apply outline-none ring-2 ring-violet-500 ring-offset-2 ring-offset-transparent; }
+}
+
+@layer components {
+  .glass {
+    @apply border border-slate-200/70 bg-white/65 shadow-xl shadow-slate-900/5 backdrop-blur-xl
+           dark:border-white/10 dark:bg-white/[0.06] dark:shadow-black/30;
+  }
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-violet-600 via-fuchsia-600 to-cyan-500
+           px-5 py-2.5 text-sm font-semibold text-white transition-all duration-200
+           hover:-translate-y-0.5 hover:shadow-lg hover:shadow-fuchsia-500/30 active:scale-95 disabled:pointer-events-none disabled:opacity-40;
+  }
+  .btn-ghost {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl bg-slate-900/5 px-4 py-2 text-sm font-semibold
+           transition-all duration-200 hover:bg-slate-900/10 active:scale-95 disabled:pointer-events-none disabled:opacity-40
+           dark:bg-white/10 dark:hover:bg-white/15;
+  }
+  .tool-btn {
+    @apply relative grid h-10 w-10 place-items-center rounded-xl bg-slate-900/5 text-slate-700 transition-all duration-150
+           hover:bg-slate-900/10 active:scale-90 disabled:pointer-events-none disabled:opacity-30
+           dark:bg-white/10 dark:text-slate-200 dark:hover:bg-white/20;
+  }
+  .tool-btn-active {
+    @apply !bg-gradient-to-br from-violet-600 to-fuchsia-600 !text-white shadow-lg shadow-violet-500/40;
+  }
+}
+
+/* Highlight for toolbar buttons hovered by the hand cursor */
+.gesture-hover {
+  outline: 2px solid #22d3ee;
+  outline-offset: 2px;
+  transform: scale(1.12);
+  z-index: 2;
+}
+
+/* On-canvas hand cursor (updated directly from the tracking loop) */
+.air-cursor {
+  position: absolute;
+  z-index: 5;
+  pointer-events: none;
+  opacity: 0;
+  aspect-ratio: 1 / 1;
+  min-width: 18px;
+  transform: translate(-50%, -50%);
+  border: 2px solid #fff;
+  border-radius: 9999px;
+  background-color: color-mix(in srgb, currentColor 40%, transparent);
+  box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.35), 0 0 18px currentColor;
+  transition: opacity 0.15s, border-color 0.15s, border-radius 0.15s;
+}
+.air-cursor[data-mode='erase'] { background-color: rgba(255, 255, 255, 0.25); border-style: dashed; }
+.air-cursor[data-mode='move'] { border-color: #22d3ee; border-radius: 8px; background-color: rgba(34, 211, 238, 0.25); }
+.air-cursor[data-mode='pause'] { border-color: #facc15; background-color: rgba(250, 204, 21, 0.2); }
+.air-cursor[data-mode='hover'] { border-color: #22d3ee; background-color: transparent; }
+.air-cursor[data-mode='idle'] { background-color: transparent; }
+
+@keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+.animate-float { animation: float 6s ease-in-out infinite; }
+
+@media (prefers-reduced-motion: reduce) {
+  * { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+}
